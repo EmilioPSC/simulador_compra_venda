@@ -1,262 +1,256 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+  <meta charset="UTF-8">
   <title>Simulador de Caixa de Supermercado</title>
-  <style>
-    body {
-      font-family: Arial;
-      font-size: 18px;
-      margin: 20px;
-      background-color: #f9f9f9;
-    }
-    h1 {
-      color: #0066cc;
-      text-align: center;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .produtos {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-    .produto {
-      border: 2px solid #ddd;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      width: 120px;
-      border-radius: 5px;
-      background-color: #f5f5f5;
-    }
-    .produto:hover {
-      border-color: #0066cc;
-      background-color: #e9f3ff;
-    }
-    .produto img {
-      width: 80px;
-      height: 80px;
-      display: block;
-      margin: 0 auto 10px;
-    }
-    .compra {
-      background-color: #f5f5f5;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-    .input-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input {
-      padding: 10px;
-      font-size: 18px;
-      width: 100%;
-      box-sizing: border-box;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 18px;
-      cursor: pointer;
-      border-radius: 5px;
-      width: 100%;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .resultado {
-      background-color: #e9f3ff;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 5px;
-      font-size: 20px;
-      text-align: center;
-      display: none;
-    }
-    .carrinho {
-      background-color: #f5f5f5;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-    .carrinho-vazio {
-      text-align: center;
-      color: #888;
-      padding: 20px;
-    }
-    .mensagem {
-      color: #e74c3c;
-      font-weight: bold;
-      margin-top: 10px;
-      text-align: center;
-    }
-    .pulsar {
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    .pago-insuficiente {
-      border-color: #e74c3c;
-      background-color: #ffeeee;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Caixa de Supermercado</h1>
-    
-    <div class="produtos">
-      <div class="produto" onclick="selecionarProduto('Arroz', 5)">
-        <img src="arroz.jpg" alt="Arroz">
-        <div>Arroz</div>
-        <div><strong>R$ 5,00</strong></div>
-      </div>
-      <div class="produto" onclick="selecionarProduto('Feijão', 6)">
-        <img src="feijao.jpg" width="80" height="80" alt="Feijão">
-        <div>Feijão</div>
-        <div><strong>R$ 6,00</strong></div>
-      </div>
-      <div class="produto" onclick="selecionarProduto('Leite', 4)">
-        <img src="leite.jpg" alt="Leite">
-        <div>Leite</div>
-        <div><strong>R$ 4,00</strong></div>
-      </div>
-      <div class="produto" onclick="selecionarProduto('Pão', 3)">
-        <img src="pao.jpg" alt="Pão">
-        <div>Pão</div>
-        <div><strong>R$ 3,00</strong></div>
-      </div>
-    </div>
-    
-    <div class="carrinho" id="carrinho">
-      <h2>Sua compra:</h2>
-      <div class="carrinho-vazio" id="carrinho-vazio">
-        Clique nos produtos acima para comprar
-      </div>
-      <div id="itens-comprados">
-      </div>
-      <div id="total-area" style="display:none">
-        <hr>
-        <h3>Total: R$ <span id="valor-total">0.00</span></h3>
-      </div>
-    </div>
-    
-    <div class="compra" id="area-pagamento" style="display:none">
-      <h2>Pagamento</h2>
-      <div class="input-group">
-        <label for="valor-pago">Quanto você vai pagar?</label>
-        <input type="number" id="valor-pago" step="0.01" min="0">
-        <div class="mensagem" id="mensagem-pagamento" style="display:none"></div>
-      </div>
-      <button onclick="calcularTroco()" id="botao-pagar">Pagar</button>
-    </div>
-    
-    <div class="resultado" id="resultado">
-      <h2>Seu troco é:</h2>
-      <p id="troco-valor" style="font-size: 30px; font-weight: bold; color: #4CAF50;">R$ 0.00</p>
-      <button onclick="novaCompra()">Nova Compra</button>
+
+<div class="container">
+  <h1>Caixa de Supermercado</h1>
+
+  <div class="filtros">
+    <button onclick="filtrarCategoria('alimentos')">Alimentos</button>
+    <button onclick="filtrarCategoria('bebidas')">Bebidas</button>
+  </div>
+
+<div class="produtos">
+  <div class="produto alimentos" onclick="selecionarProduto('Arroz', 6)">
+    <img src="arroz.jpg" alt="Arroz">
+    <div>Arroz</div>
+    <div><strong>R$ 6</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Feijão', 7)">
+    <img src="feijao.jpg" alt="Feijão">
+    <div>Feijão</div>
+    <div><strong>R$ 7</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Pão', 5)">
+    <img src="pao.jpg" alt="Pão">
+    <div>Pão</div>
+    <div><strong>R$ 5</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Macarrão', 4)">
+    <img src="macarrao.jpg" alt="Macarrão">
+    <div>Macarrão</div>
+    <div><strong>R$ 4</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Farinha', 5)">
+    <img src="farinha.jpeg" alt="Farinha">
+    <div>Farinha</div>
+    <div><strong>R$ 5</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Batata', 6)">
+    <img src="batata.jpg" alt="Batata">
+    <div>Batata</div>
+    <div><strong>R$ 6</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Tomate', 7)">
+    <img src="tomate.jpg" alt="Tomate">
+    <div>Tomate</div>
+    <div><strong>R$ 7</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Cebola', 4)">
+    <img src="cebola.jpg" alt="Cebola">
+    <div>Cebola</div>
+    <div><strong>R$ 4</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Margarina', 6)">
+    <img src="margarina.jpg" alt="Margarina">
+    <div>Margarina</div>
+    <div><strong>R$ 6</strong></div>
+  </div>
+
+  <div class="produto alimentos" onclick="selecionarProduto('Ovo (12 un)', 10)">
+    <img src="ovos.jpg" alt="Ovo">
+    <div>Ovos</div>
+    <div><strong>R$ 10</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Leite', 6)">
+    <img src="leite.jpg" alt="Leite">
+    <div>Leite</div>
+    <div><strong>R$ 6</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Refrigerante', 7)">
+    <img src="refri.webp" alt="Refrigerante">
+    <div>Refrigerante</div>
+    <div><strong>R$ 7</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Suco Natural', 8)">
+    <img src="suco.jpg" alt="Suco">
+    <div>Suco Natural</div>
+    <div><strong>R$ 8</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Água', 3)">
+    <img src="agua.jpeg" alt="Água">
+    <div>Água</div>
+    <div><strong>R$ 3</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Chá Gelado', 6)">
+    <img src="cha.jpg" alt="Chá">
+    <div>Chá Gelado</div>
+    <div><strong>R$ 6</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Cerveja (lata)', 5)">
+    <img src="cerveja.jpg" alt="Cerveja">
+    <div>Cerveja (lata)</div>
+    <div><strong>R$ 5</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Energético', 9)">
+    <img src="energetico.jpg" alt="Energético">
+    <div>Energético</div>
+    <div><strong>R$ 9</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Iogurte', 4)">
+    <img src="iogurte.webp" alt="Iogurte">
+    <div>Iogurte</div>
+    <div><strong>R$ 4</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Achocolatado', 6)">
+    <img src="achocolatado.webp" alt="Achocolatado">
+    <div>Achocolatado</div>
+    <div><strong>R$ 6</strong></div>
+  </div>
+
+  <div class="produto bebidas" onclick="selecionarProduto('Café', 8)">
+    <img src="cafe.jpg" alt="Café">
+    <div>Café</div>
+    <div><strong>R$ 8</strong></div>
+  </div>
+</div>
+
+
+
+  <div class="carrinho" id="carrinho">
+    <h2>Sua compra:</h2>
+    <div class="carrinho-vazio" id="carrinho-vazio">Clique nos produtos acima para comprar</div>
+    <div id="itens-comprados"></div>
+    <div id="total-area" style="display:none">
+      <hr>
+      <h3>Total: R$ <span id="valor-total">0.00</span></h3>
     </div>
   </div>
 
-  <script>
-    var total = 0;
-    var itens = [];
-    
-    function selecionarProduto(nome, preco) {
-      itens.push({nome: nome, preco: preco});
-      atualizarCarrinho();
-      document.getElementById("area-pagamento").style.display = "block";
-      document.getElementById("mensagem-pagamento").style.display = "none";
-      document.getElementById("valor-pago").classList.remove("pago-insuficiente");
-    }
-    
-    function atualizarCarrinho() {
-      document.getElementById("carrinho-vazio").style.display = "none";
+  <div class="compra" id="area-pagamento" style="display:none">
+    <h2>Pagamento</h2>
+    <div class="input-group">
+      <label for="valor-pago">Quanto você vai pagar?</label>
+      <input type="number" id="valor-pago">
+      <div class="mensagem" id="mensagem-pagamento" style="display:none"></div>
+    </div>
+    <button onclick="calcularTroco()">🛒 Pagar</button>
+  </div>
 
-      var itensArea = document.getElementById("itens-comprados");
-      itensArea.innerHTML = "";
+  <div class="resultado" id="resultado">
+    <h2>Seu troco é:</h2>
+    <p id="troco-valor" style="font-size: 30px; font-weight: bold; color: #4CAF50;">R$ 0.00</p>
+    <button onclick="novaCompra()">Nova Compra</button>
+  </div>
+</div>
 
-      total = 0;
-      for (var i = 0; i < itens.length; i++) {
-        var item = itens[i];
-        total += item.preco;
-        
-        var itemDiv = document.createElement("div");
-        itemDiv.innerHTML = "<p>" + item.nome + " - R$ " + item.preco.toFixed(2) + "</p>";
-        itensArea.appendChild(itemDiv);
-      }
-    
-      document.getElementById("valor-total").textContent = total.toFixed(2);
-      document.getElementById("total-area").style.display = "block";
-      var totalSpan = document.getElementById("valor-total");
-      totalSpan.classList.add("pulsar");
-      setTimeout(function() {
-        totalSpan.classList.remove("pulsar");
-      }, 1500);
+<script>
+  var total = 0;
+  var itens = [];
+
+  function selecionarProduto(nome, preco) {
+    itens.push({nome: nome, preco: preco});
+    atualizarCarrinho();
+    document.getElementById("area-pagamento").style.display = "block";
+    document.getElementById("mensagem-pagamento").style.display = "none";
+    document.getElementById("valor-pago").classList.remove("pago-insuficiente");
+  }
+
+  function atualizarCarrinho() {
+    document.getElementById("carrinho-vazio").style.display = "none";
+    var itensArea = document.getElementById("itens-comprados");
+    itensArea.innerHTML = "";
+    total = 0;
+    for (var i = 0; i < itens.length; i++) {
+      var item = itens[i];
+      total += item.preco;
+      var itemDiv = document.createElement("div");
+      itemDiv.innerHTML = "<p>" + item.nome + " - R$ " + item.preco.toFixed(2) + "</p>";
+      itensArea.appendChild(itemDiv);
     }
-    
-    function calcularTroco() {
-      var valorPago = parseFloat(document.getElementById("valor-pago").value);
-      var msgElement = document.getElementById("mensagem-pagamento");
-      var inputPago = document.getElementById("valor-pago");
-      inputPago.classList.remove("pago-insuficiente");
-      msgElement.style.display = "none";
-      
-      if (isNaN(valorPago) || valorPago <= 0) {
-        msgElement.innerText = "Por favor, digite o valor do pagamento";
-        msgElement.style.display = "block";
-        inputPago.classList.add("pago-insuficiente");
-        inputPago.focus();
-        return;
-      }
-      
-      if (valorPago < total) {
-        msgElement.innerText = "Valor insuficiente para completar a compra";
-        msgElement.style.display = "block";
-        inputPago.classList.add("pago-insuficiente");
-        inputPago.focus();
-        return;
-      }
-      
-      var troco = valorPago - total;
-      document.getElementById("troco-valor").textContent = "R$ " + troco.toFixed(2);
-      document.getElementById("resultado").style.display = "block";
-      document.getElementById("area-pagamento").style.display = "none";
+    document.getElementById("valor-total").textContent = total.toFixed(2);
+    document.getElementById("total-area").style.display = "block";
+  }
+
+  function calcularTroco() {
+    var valorPago = parseFloat(document.getElementById("valor-pago").value);
+    var msgElement = document.getElementById("mensagem-pagamento");
+    var inputPago = document.getElementById("valor-pago");
+    inputPago.classList.remove("pago-insuficiente");
+    msgElement.style.display = "none";
+
+    if (isNaN(valorPago) || valorPago <= 0) {
+      msgElement.innerText = "Por favor, digite o valor do pagamento";
+      msgElement.style.display = "block";
+      inputPago.classList.add("pago-insuficiente");
+      inputPago.focus();
+      return;
     }
-    
-    function novaCompra() {
-      total = 0;
-      itens = [];
-      document.getElementById("carrinho-vazio").style.display = "block";
-      document.getElementById("itens-comprados").innerHTML = "";
-      document.getElementById("total-area").style.display = "none";
-      document.getElementById("area-pagamento").style.display = "none";
-      document.getElementById("valor-pago").value = "";
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("mensagem-pagamento").style.display = "none";
-      document.getElementById("valor-pago").classList.remove("pago-insuficiente");
+    if (valorPago < total) {
+      msgElement.innerText = "Valor insuficiente para completar a compra";
+      msgElement.style.display = "block";
+      inputPago.classList.add("pago-insuficiente");
+      inputPago.focus();
+      return;
     }
-  </script>
+    var troco = valorPago - total;
+    document.getElementById("troco-valor").textContent = "R$ " + troco.toFixed(2);
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("area-pagamento").style.display = "none";
+  }
+
+  function novaCompra() {
+    total = 0;
+    itens = [];
+    document.getElementById("carrinho-vazio").style.display = "block";
+    document.getElementById("itens-comprados").innerHTML = "";
+    document.getElementById("total-area").style.display = "none";
+    document.getElementById("area-pagamento").style.display = "none";
+    document.getElementById("valor-pago").value = "";
+    document.getElementById("resultado").style.display = "none";
+    document.getElementById("mensagem-pagamento").style.display = "none";
+    document.getElementById("valor-pago").classList.remove("pago-insuficiente");
+  }
+
+  function filtrarCategoria(categoria) {
+    const produtos = document.querySelectorAll('.produto');
+    produtos.forEach(produto => {
+      if (produto.classList.contains(categoria)) {
+        produto.style.display = 'block';
+      } else {
+        produto.style.display = 'none';
+      }
+    });
+  }
+  
+window.onload = () => {
+  const produtos = document.querySelectorAll('.produto');
+  produtos.forEach(p => p.style.display = 'none');
+};
+
+</script>
+
 </body>
 </html>
